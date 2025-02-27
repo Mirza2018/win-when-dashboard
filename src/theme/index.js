@@ -14,6 +14,8 @@ export const mainTheme = {
     },
     Input: {
       colorIcon: "#839F9F",
+      colorBorder: "#839F9F",
+      activeBorderColor: "#839F9F",
     },
     Checkbox: {
       colorPrimary: "#839F9F",

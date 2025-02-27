@@ -3,6 +3,7 @@ import profileImage from "/images/profileImage.png";
 import { EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
+import PhoneInput from "react-phone-input-2";
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("home_care_user"));
@@ -10,7 +11,7 @@ const Profile = () => {
     firstName: "James",
     LastName: "Mitchell",
     email: "emily@gmail.com",
-    contactNumber: "+99-01846875456",
+    contactNumber: "88017707139055",
     dob: "10-10-1998",
   };
 
@@ -21,7 +22,7 @@ const Profile = () => {
     >
       <div className=" w-full flex items-center p-5 mb-10  rounded-tl-xl rounded-tr-xl">
         <p className="text-3xl text-black font-semibold w-[95%] mx-auto flex gap-1 items-center">
-           Profile Information
+          Profile Information
         </p>
         <Link
           to={`/${user?.role}/edit-profile`}
@@ -64,7 +65,7 @@ const Profile = () => {
                       readOnly
                       value={profileData.firstName}
                       placeholder="Enter your first name"
-                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border !border-input-color hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                     />
                   </Form.Item>
                 </div>
@@ -77,7 +78,7 @@ const Profile = () => {
                       readOnly
                       value={profileData.LastName}
                       placeholder="Enter your last name"
-                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border !border-input-color hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                     />
                   </Form.Item>
                 </div>
@@ -90,20 +91,33 @@ const Profile = () => {
                 <Input
                   value={profileData.email}
                   readOnly
-                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border !border-input-color hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                 />
               </Form.Item>
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Phone Number
               </Typography.Title>
               <Form.Item className="text-white ">
-                <Input
+                {/* <Input
                   value={profileData.contactNumber}
                   placeholder="Enter your phone number"
                   readOnly
-                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border !border-input-color hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                /> */}
+
+                <PhoneInput
+                  value={profileData.contactNumber}
+                  className=""
+                  enableSearch={true}
                 />
               </Form.Item>
+              {/* <Form.Item
+                initialValue={profileData.contactNumber}
+                name="contactNumber"
+                className="text-white"
+              > */}
+              {/* <PhoneInput className="" enableSearch={true} /> */}
+              {/* </Form.Item> */}
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Date Of Birth
               </Typography.Title>
@@ -112,7 +126,7 @@ const Profile = () => {
                   readOnly
                   value={profileData.dob}
                   placeholder="Enter Date of Birth"
-                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border !border-input-color hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                 />
               </Form.Item>
             </Form>

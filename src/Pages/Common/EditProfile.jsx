@@ -5,13 +5,17 @@ import { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoCameraOutline, IoChevronBackOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 const EditProfile = () => {
+  const navigate = useNavigate();
   const profileData = {
     firstName: "James",
     LastName: "Mitchell",
     email: "emily@gmail.com",
-    contactNumber: "+99-01846875456",
+    contactNumber: "+880171139055",
     dob: "10-10-1998",
   };
 
@@ -33,6 +37,7 @@ const EditProfile = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
     console.log(imageUrl);
+    navigate("/admin/profile");
   };
 
   return (
@@ -46,9 +51,7 @@ const EditProfile = () => {
             className="text-4xl cursor-pointer  font-semibold"
             onClick={() => window.history.back()}
           />
-          <p className="text-3xl text-black font-semibold">
-            Edit Profile
-          </p>
+          <p className="text-3xl text-black font-semibold">Edit Profile</p>
         </div>
       </div>
       <div className=" ">
@@ -114,7 +117,7 @@ const EditProfile = () => {
                       suffix={<MdOutlineEdit />}
                       type="text"
                       placeholder="Enter your first name"
-                      className="py-2 px-3 text-xl border !border-input-color ! !bg-transparent"
+                      className="py-2 px-3 text-xl border  ! !bg-transparent"
                     />
                   </Form.Item>
                 </div>
@@ -131,12 +134,11 @@ const EditProfile = () => {
                       suffix={<MdOutlineEdit />}
                       type="text"
                       placeholder="Enter your last name"
-                      className="py-2 px-3 text-xl border !border-input-color ! !bg-transparent"
+                      className="py-2 px-3 text-xl border  ! !bg-transparent"
                     />
                   </Form.Item>
                 </div>
               </div>
-
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Email
               </Typography.Title>
@@ -149,22 +151,21 @@ const EditProfile = () => {
                   suffix={<MdOutlineEdit />}
                   type="email"
                   placeholder="Enter your email"
-                  className="py-2 px-3 text-xl border !border-input-color ! !bg-transparent"
+                  className="py-2 px-3 text-xl border  ! !bg-transparent"
                 />
               </Form.Item>
-
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Contact number
               </Typography.Title>
+
               <Form.Item
                 initialValue={profileData.contactNumber}
                 name="contactNumber"
                 className="text-white"
               >
-                <Input
-                  suffix={<MdOutlineEdit />}
-                  placeholder="Enter your Contact number"
-                  className="py-2 px-3 text-xl border !border-input-color ! !bg-transparent"
+                <PhoneInput
+                  className=""
+                  enableSearch={true}
                 />
               </Form.Item>
               <Typography.Title level={5} style={{ color: "#222222" }}>
@@ -178,7 +179,7 @@ const EditProfile = () => {
                 <Input
                   suffix={<MdOutlineEdit />}
                   placeholder="Enter your Date of Birth"
-                  className="py-2 px-3 text-xl border !border-input-color ! !bg-transparent"
+                  className="py-2 px-3 text-xl border  ! !bg-transparent"
                 />
               </Form.Item>
               <Form.Item>

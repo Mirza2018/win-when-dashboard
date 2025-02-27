@@ -54,7 +54,7 @@ const UsersPage = () => {
   const filteredCompanyData = useMemo(() => {
     if (!searchText) return data;
     return data.filter((item) =>
-      item.companyName.toLowerCase().includes(searchText.toLowerCase())
+      item.userName.toLowerCase().includes(searchText.toLowerCase())
     );
   }, [data, searchText]);
 
@@ -108,8 +108,8 @@ const UsersPage = () => {
             >
               <Input
                 placeholder="Search User..."
-                // value={searchText}
-                // onChange={(e) => onSearch(e.target.value)}
+                value={searchText}
+                onChange={(e) => onSearch(e.target.value)}
                 className="font-semibold !border-primary-color !placeholder:text-secondary-color !bg-white text-secondary-color py-2 !rounded-full"
                 prefix={
                   <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />

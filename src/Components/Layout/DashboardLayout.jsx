@@ -1,17 +1,6 @@
 import Topbar from "../Shared/Topbar";
 
 // import logo from "/images/logo.png";
-import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
-
-import companies from "../../../public/images/dashboard-logo/companies.svg";
-import carer from "../../../public/images/dashboard-logo/carer.svg";
-import serviceUser from "../../../public/images/dashboard-logo/service.svg";
-import employee from "../../../public/images/dashboard-logo/employee.svg";
-import report from "../../../public/images/dashboard-logo/report.svg";
-import setting from "../../../public/images/dashboard-logo/setting.svg";
-import profile from "../../../public/images/dashboard-logo/profile.svg";
-import feedback from "../../../public/images/dashboard-logo/feedback.svg";
-import logout from "../../../public/images/dashboard-logo/logout.svg";
 
 import {
   Link,
@@ -38,6 +27,17 @@ const DashboardLayout = () => {
   // Logic to set active keys
   const activeKeys = (() => {
     if (
+      currentPath.includes("/dashboard")
+    ) {
+      return ["dashboard"];
+    }
+    if (currentPath.includes("/users")) {
+      return ["users"];
+    }
+    if (currentPath.includes("/categories")) {
+      return ["categories"];
+    }
+    if (
       currentPath.includes("/profile") ||
       currentPath.includes("/edit-profile")
     ) {
@@ -45,6 +45,9 @@ const DashboardLayout = () => {
     }
     if (currentPath.includes("/settings")) {
       return ["settings"];
+    }
+    if (currentPath.includes("/logout")) {
+      return ["logout"];
     }
     return [currentPath.split("/")[1]]; // Default fallback
   })();
@@ -137,88 +140,7 @@ const DashboardLayout = () => {
     },
   ];
 
-  const companyMenuItems = [
-    {
-      key: "dashboard",
-      icon: (
-        <img
-          src={dashboardLogo}
-          alt="dashboard"
-          width={20}
-          style={{
-            filter: location.pathname.includes("dashboard")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="dashboard">Dashboard</NavLink>,
-    },
-    {
-      key: "service-user",
-      icon: (
-        <img
-          src={serviceUser}
-          alt="service-user"
-          width={20}
-          style={{
-            filter: location.pathname.includes("service-user")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="service-user">Service User</NavLink>,
-    },
-    {
-      key: "carer",
-      icon: (
-        <img
-          src={carer}
-          alt="carer"
-          width={20}
-          style={{
-            filter: location.pathname.includes("carer")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="carer">Carer</NavLink>,
-    },
-    {
-      key: "employee",
-      icon: (
-        <img
-          src={employee}
-          alt="employee"
-          width={20}
-          style={{
-            filter: location.pathname.includes("employee")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="employee">Employee</NavLink>,
-    },
-    {
-      key: "report",
-      icon: (
-        <img
-          src={report}
-          alt="report"
-          width={20}
-          style={{
-            filter: location.pathname.includes("report")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="report">Report</NavLink>,
-    },
-  ];
+  const companyMenuItems = [];
 
   const commonItems = [
     {
@@ -338,7 +260,7 @@ const DashboardLayout = () => {
           <Menu
             mode="inline"
             defaultSelectedKeys={pathSegment}
-            selectedKeys={pathSegment}
+            selectedKeys={activeKeys}
             style={{
               backgroundColor: "transparent",
               border: "none",
