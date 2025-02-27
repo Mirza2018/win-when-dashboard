@@ -74,7 +74,7 @@ const EditProfile = () => {
                     onChange={handleImageUpload}
                     maxCount={1}
                     accept="image/*"
-                    className="absolute -top-10 !right-3 text-end"
+                    className="absolute -top-10 !right-3 text-end noText"
                     style={{
                       width: "100%",
                       height: "100%",
@@ -163,10 +163,7 @@ const EditProfile = () => {
                 name="contactNumber"
                 className="text-white"
               >
-                <PhoneInput
-                  className=""
-                  enableSearch={true}
-                />
+                <PhoneInput className="" enableSearch={true} />
               </Form.Item>
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Date Of Birth

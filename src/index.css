@@ -10,6 +10,11 @@
 .country-name{
   color: black;
 }
+ .noText .ant-upload-list-text {
+  width:150px  !important;
+  text-align: start;
+
+}
 
 ::-webkit-scrollbar {
   width: 5px;
