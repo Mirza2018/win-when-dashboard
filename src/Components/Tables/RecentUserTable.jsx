@@ -7,10 +7,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
 //* Modal Table
-import AllCompanyTable from "../../Components/Tables/Admin/AllCompanyTable";
-import AddCompanyModal from "../../Components/Modal/Admin/AddCompanyModal";
-import ViewCompanyModal from "../../Components/Modal/Admin/ViewCompanyModal";
-import BlockCompanyModal from "../../Components/Modal/Admin/BlockCompanyModal";
+import AllCompanyTable from "./Admin/AllUserTable";
+import AddCompanyModal from "../Modal/Admin/AddCategoriesModal";
+import ViewCompanyModal from "../Modal/Admin/ViewUserModal";
+import BlockCompanyModal from "../Modal/Admin/BlockUserModal";
 
 const RecentUserTable = () => {
   //* Store Search Value
@@ -92,12 +92,7 @@ const RecentUserTable = () => {
   };
 
   return (
-    <div
-      className="bg-highlight-color   rounded-xl"
-      
-    >
-    
-
+    <div className="bg-highlight-color   rounded-xl">
       {/* Add Service User Button  */}
       {/* <div className="px-10 mt-10 ">
         <div
@@ -130,6 +125,7 @@ const RecentUserTable = () => {
         handleCancel={handleCancel}
         currentCompanyRecord={currentCompanyRecord}
         handleCompanyBlock={handleCompanyBlock}
+        showCompanyBlockModal={showCompanyBlockModal}
       />
       <BlockCompanyModal
         isCompanyBlockModalVisible={isCompanyBlockModalVisible}

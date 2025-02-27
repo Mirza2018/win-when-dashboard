@@ -7,10 +7,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
 //* Modal Table
-import AllCompanyTable from "../../Components/Tables/Admin/AllCompanyTable";
-import AddCompanyModal from "../../Components/Modal/Admin/AddCompanyModal";
-import ViewCompanyModal from "../../Components/Modal/Admin/ViewCompanyModal";
-import BlockCompanyModal from "../../Components/Modal/Admin/BlockCompanyModal";
+import AllUserTable from "../../Components/Tables/Admin/AllUserTable";
+import ViewUserModal from "../../Components/Modal/Admin/ViewUserModal";
+import BlockUserModal from "../../Components/Modal/Admin/BlockUserModal";
+import AddCategoriesModal from "../../Components/Modal/Admin/AddCategoriesModal";
 
 const UsersPage = () => {
   //* Store Search Value
@@ -122,7 +122,7 @@ const UsersPage = () => {
 
       {/* Table  */}
       <div className="px-10 py-10">
-        <AllCompanyTable
+        <AllUserTable
           data={filteredCompanyData}
           loading={loading}
           showCompanyViewModal={showCompanyViewModal}
@@ -132,17 +132,18 @@ const UsersPage = () => {
       </div>
 
       {/* Modals */}
-      <AddCompanyModal
+      <AddCategoriesModal
         isAddCompanyModalVisible={isAddCompanyModalVisible}
         handleCancel={handleCancel}
       />
-      <ViewCompanyModal
+      <ViewUserModal
         isCompanyViewModalVisible={isCompanyViewModalVisible}
         handleCancel={handleCancel}
         currentCompanyRecord={currentCompanyRecord}
         handleCompanyBlock={handleCompanyBlock}
+        showCompanyBlockModal={showCompanyBlockModal}
       />
-      <BlockCompanyModal
+      <BlockUserModal
         isCompanyBlockModalVisible={isCompanyBlockModalVisible}
         handleCompanyBlock={handleCompanyBlock}
         handleCancel={handleCancel}

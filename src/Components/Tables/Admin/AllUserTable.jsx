@@ -4,7 +4,7 @@ import { GoEye } from "react-icons/go";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AllImages } from "../../../../public/images/AllImages";
 
-const AllCompanyTable = ({
+const AllUserTable = ({
   data,
   loading,
   showCompanyViewModal,
@@ -103,4 +103,4 @@ const AllCompanyTable = ({
   );
 };
 
-export default AllCompanyTable;
+export default AllUserTable;

@@ -4,11 +4,12 @@ import { AllImages } from "../../../../public/images/AllImages";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-const ViewCompanyModal = ({
+const ViewUserModal = ({
   isCompanyViewModalVisible,
   handleCancel,
   currentCompanyRecord,
   handleCompanyBlock,
+  showCompanyBlockModal,
 }) => {
   return (
     <Modal
@@ -60,14 +61,14 @@ const ViewCompanyModal = ({
               <div className="flex items-center gap-1 sm:gap-2 mb-2">
                 <div className="font-bold">Joining Date:</div>
                 <div>{currentCompanyRecord?.joiningDate}</div>
-                
               </div>
-             
             </div>
           </div>
         </div>
         <button
-          onClick={() => handleCompanyBlock(currentCompanyRecord)}
+          onClick={() => (
+            handleCompanyBlock(currentCompanyRecord), showCompanyBlockModal()
+          )}
           className="bg-secondary-color text-primary-color py-3 text-xl font-semibold rounded-lg mt-8 w-full"
         >
           Block
@@ -77,4 +78,4 @@ const ViewCompanyModal = ({
   );
 };
 
-export default ViewCompanyModal;
+export default ViewUserModal;

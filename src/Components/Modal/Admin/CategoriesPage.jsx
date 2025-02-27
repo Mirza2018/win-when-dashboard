@@ -2,7 +2,7 @@ import axios from "axios";
 import { ConfigProvider, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import AddCompanyModal from "./AddCompanyModal";
+import AddCompanyModal from "./AddCategoriesModal";
 import { useMemo, useState } from "react";
 
 const categories = [
@@ -68,7 +68,9 @@ const CategoriesPage = () => {
       </div>
       {categories.map((category) => (
         <div className="flex  gap-5 p-5 justify-between items-center border-b border-base-color  w-[400px] mx-auto">
-              <h1 className="text-lg text-black flex justify-center w-full">{ category.id}</h1>
+          <h1 className="text-lg text-black flex justify-center w-full">
+            {category.id}
+          </h1>
           <h1 className="text-lg text-black flex justify-center w-full">
             {category.name}
           </h1>

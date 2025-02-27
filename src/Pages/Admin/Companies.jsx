@@ -7,10 +7,10 @@ import { SearchOutlined } from "@ant-design/icons";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
 //* Modal Table
-import AllCompanyTable from "../../Components/Tables/Admin/AllCompanyTable";
-import AddCompanyModal from "../../Components/Modal/Admin/AddCompanyModal";
-import ViewCompanyModal from "../../Components/Modal/Admin/ViewCompanyModal";
-import BlockCompanyModal from "../../Components/Modal/Admin/BlockCompanyModal";
+import AllCompanyTable from "../../Components/Tables/Admin/AllUserTable";
+import AddCompanyModal from "../../Components/Modal/Admin/AddCategoriesModal";
+import ViewCompanyModal from "../../Components/Modal/Admin/ViewUserModal";
+import BlockCompanyModal from "../../Components/Modal/Admin/BlockUserModal";
 
 const AllCompanies = () => {
   //* Store Search Value

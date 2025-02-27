@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button, ConfigProvider, Form, Input, Modal, Typography } from "antd";
 
-const AddCompanyModal = ({ isAddCompanyModalVisible, handleCancel }) => {
+const AddCategoriesModal = ({ isAddCompanyModalVisible, handleCancel }) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log("Service User:", values);
@@ -86,4 +86,4 @@ const AddCompanyModal = ({ isAddCompanyModalVisible, handleCancel }) => {
   );
 };
 
-export default AddCompanyModal;
+export default AddCategoriesModal;

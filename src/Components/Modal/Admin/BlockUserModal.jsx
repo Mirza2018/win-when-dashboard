@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button, Modal } from "antd";
 
-const BlockCompanyModal = ({
+const BlockUserModal = ({
   isCompanyBlockModalVisible,
   handleCompanyBlock,
   handleCancel,
@@ -57,4 +57,4 @@ const BlockCompanyModal = ({
   );
 };
 
-export default BlockCompanyModal;
+export default BlockUserModal;
