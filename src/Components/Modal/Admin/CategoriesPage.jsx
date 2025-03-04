@@ -47,13 +47,17 @@ const CategoriesPage = () => {
       </div>
 
       {/* Add Service User Button  */}
-      <div className="px-10 mt-10 ">
+      <div className="md:px-10 px-6 mt-10 ">
         <div
           onClick={showAddCompanyModal}
           className="bg-secondary-color text-primary-color flex justify-center items-center gap-2 py-2 w-full rounded-lg cursor-pointer"
         >
-          <IoMdAddCircleOutline className="text-3xl" />
-          <p className="text-2xl font-semibold">Add Categories</p>
+          <div>
+            <IoMdAddCircleOutline className="md:text-3xl text-2xl" />
+          </div>
+          <p className="md:text-2xl text-lg font-semibold whitespace-nowrap">
+            Add Categories
+          </p>
         </div>
       </div>
 
@@ -67,7 +71,7 @@ const CategoriesPage = () => {
         <h1 className="text-xl text-secondary-color ">Category Name</h1>
       </div>
       {categories.map((category) => (
-        <div className="flex  gap-5 p-5 justify-between items-center border-b border-base-color  w-[400px] mx-auto">
+        <div className="flex  gap-5 p-5 justify-between items-center border-b border-base-color  max-w-[400px] mx-auto">
           <h1 className="text-lg text-black flex justify-center w-full">
             {category.id}
           </h1>

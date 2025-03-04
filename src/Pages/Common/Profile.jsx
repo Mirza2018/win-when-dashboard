@@ -20,7 +20,7 @@ const Profile = () => {
       className="bg-highlight-color min-h-[90vh]  rounded-xl"
       style={{ boxShadow: "0px 0px 5px  rgba(0, 0, 0, 0.25)" }}
     >
-      <div className=" w-full flex items-center p-5 mb-10  rounded-tl-xl rounded-tr-xl">
+      <div className=" w-full flex md:flex-row flex-col items-center  p-5 mb-10  rounded-tl-xl rounded-tr-xl">
         <p className="text-3xl text-black font-semibold w-[95%] mx-auto flex gap-1 items-center">
           Profile Information
         </p>

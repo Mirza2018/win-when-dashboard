@@ -26,9 +26,7 @@ const DashboardLayout = () => {
 
   // Logic to set active keys
   const activeKeys = (() => {
-    if (
-      currentPath.includes("/dashboard")
-    ) {
+    if (currentPath.includes("/dashboard")) {
       return ["dashboard"];
     }
     if (currentPath.includes("/users")) {
@@ -126,7 +124,7 @@ const DashboardLayout = () => {
       key: "settings",
       icon: (
         <img
-          src={AllIcons.four}
+          src={AllIcons.five}
           alt="settings"
           width={20}
           style={{
@@ -138,16 +136,11 @@ const DashboardLayout = () => {
       ),
       label: <NavLink to="settings">Settings</NavLink>,
     },
-  ];
-
-  const companyMenuItems = [];
-
-  const commonItems = [
     {
       key: "profile",
       icon: (
         <img
-          src={AllIcons.five}
+          src={AllIcons.four}
           alt="profile"
           width={16}
           height={16}
@@ -162,7 +155,11 @@ const DashboardLayout = () => {
       ),
       label: <NavLink to="profile">Profile</NavLink>,
     },
+  ];
 
+  const companyMenuItems = [];
+
+  const commonItems = [
     {
       key: "logout",
       icon: (
@@ -231,8 +228,8 @@ const DashboardLayout = () => {
             top: 0,
             height: "100vh",
             overflowY: "auto",
+            overflowX:"hidden"
           }}
-          className=""
         >
           <Link to="/">
             <img
@@ -257,44 +254,34 @@ const DashboardLayout = () => {
           >
             Menu
           </Typography.Title> */}
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={pathSegment}
-            selectedKeys={activeKeys}
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              paddingLeft: "6px",
-              paddingRight: "6px",
-            }}
-            items={menuItems}
-          />
+          <div className="flex flex-col justify-between items-center h-[85vh]">
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={pathSegment}
+              selectedKeys={activeKeys}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                paddingLeft: "6px",
+                paddingRight: "6px",
 
-          {/* Other menu items */}
-          {/* <Typography.Title
-            level={5}
-            className="mt-5"
-            style={{
-              paddingLeft: "6px",
-              paddingRight: "6px",
-              marginLeft: "12%",
-            }}
-          >
-            Other
-          </Typography.Title> */}
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={pathSegment}
-            selectedKeys={activeKeys}
-            style={{
-              paddingBottom: "40px",
-              backgroundColor: "transparent",
-              border: "none",
-              paddingLeft: "6px",
-              paddingRight: "6px",
-            }}
-            items={commonItems}
-          />
+              }}
+              items={menuItems}
+            />
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={pathSegment}
+              selectedKeys={activeKeys}
+              style={{
+                paddingBottom: "40px",
+                backgroundColor: "transparent",
+                border: "none",
+                paddingLeft: "6px",
+                paddingRight: "6px",
+              }}
+              items={commonItems}
+            />
+          </div>
         </Sider>
         <Layout>
           <Header
