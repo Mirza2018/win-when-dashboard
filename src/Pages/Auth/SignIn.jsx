@@ -1,23 +1,65 @@
 import { Link, useNavigate } from "react-router-dom";
 import { AllImages } from "../../../public/images/AllImages";
 import { Button, Checkbox, Form, Input, Select, Typography } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import Password from "antd/es/input/Password";
+import { toast } from "sonner";
+import { useUserLoginMutation } from "../../redux/api/authApi";
+import { useDispatch } from "react-redux";
+import Cookies from "universal-cookie";
+import { setAccessToken, setUserInfo } from "../../redux/slices/authSlice";
 
 const SignIn = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
+  const [userLogin] = useUserLoginMutation();
+   const dispatch = useDispatch();
+   const cookies = new Cookies();
 
-  const onFinish = (values) => {
-    const data = {
-      email: values.email,
-      Password: values.password,
-      role: "admin",
-    };
+  // const onFinish = (values) => {
+  //   const data = {
+  //     email: values.email,
+  //     Password: values.password,
+  //     role: "admin",
+  //   };
 
-    localStorage.removeItem("home_care_user");
-    localStorage.setItem("home_care_user", JSON.stringify(data));
-    navigate("/");
-  };
+  //   localStorage.removeItem("home_care_user");
+  //   localStorage.setItem("home_care_user", JSON.stringify(data));
+  //   navigate("/");
+  // };
+
+const onFinish = async (values) => {
+  const toastId = toast.loading(" Logging in...");
+
+  console.log(values);
+  try {
+    const res = await userLogin(values).unwrap();
+    //* Dispatch the accessToken and userInfo to Redux store
+    dispatch(setAccessToken(res?.data?.accessToken));
+    dispatch(setUserInfo(res?.data?.user));
+    cookies.set("carTrading_accessToken", res?.data?.accessToken, {
+      path: "/",
+    });
+    console.log("res: ", res);
+
+    toast.success(res.message, {
+      id: toastId,
+      duration: 2000,
+    });
+    // Navigate after login
+    // navigate.refresh();
+    navigate("/admin/dashboard");
+  } catch (error) {
+    console.error("Login Error:", error); // Log the error for debugging
+
+    toast.error(
+      error?.data?.message || error?.error || "An error occurred during Login",
+      {
+        id: toastId,
+        duration: 2000,
+      }
+    );
+  }
+};
+
+
   return (
     <div className="">
       <div className="max-w-[1350px] w-[90%] mx-auto grid grid-cols-1 lg:grid-cols-2 items-center justify-items-center gap-10 min-h-screen py-10">

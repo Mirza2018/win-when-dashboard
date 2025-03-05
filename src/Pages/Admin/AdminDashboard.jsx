@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AllIcons } from "../../../public/images/AllImages";
-import { Link } from "react-router-dom";
 import RecentUserTable from "../../Components/Tables/RecentUserTable";
 
-import RecentCompanyTable from "../../Components/Tables/RecentCompanyTable";
 import UserRatioBarChart from "../../Components/Chart/UserRatioBarChart";
+import { useSelector } from "react-redux";
 
 // const activities = [
 //   {
@@ -110,6 +109,9 @@ const AdminDashboard = () => {
   const [recentUserLoading, setRecentUserLoading] = useState(true);
   const [recentCompanyData, setRecentCompanyData] = useState([]);
   const [recentCompanyLoading, setRecentCompanyLoading] = useState(true);
+
+  
+
 
   useEffect(() => {
     const fetchRecentUserData = async () => {

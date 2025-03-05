@@ -3,15 +3,24 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { AuthImages } from "../../../public/images/AllImages";
+import { useForgotPassOtpMutation } from "../../redux/api/authApi";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState("");
+    const [otpSubmit] = useForgotPassOtpMutation();
 
   const navigate = useNavigate();
 
-  const handleOTPSubmit = () => {
+  const handleOTPSubmit = async () => {
     console.log("OTP:", otp);
-    navigate("/update-password");
+    // navigate("/update-password");
+    try {
+      const res = await otpSubmit(otp).unwrap();
+      console.log(res);
+      navigate("/sign-in");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

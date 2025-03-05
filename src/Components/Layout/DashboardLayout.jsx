@@ -8,6 +8,7 @@ import {
   Outlet,
   ScrollRestoration,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import { Layout, Menu, Typography } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -15,9 +16,26 @@ import { Content, Header } from "antd/es/layout/layout";
 import { useEffect, useState } from "react";
 import { AllIcons, AllImages } from "../../../public/images/AllImages";
 import TopLoadingBar from "react-top-loading-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { clearAuth } from "../../redux/slices/authSlice";
 
 const DashboardLayout = () => {
-  const userRole = JSON.parse(localStorage.getItem("home_care_user")); // Parse the stored JSON string
+  // const userRole = JSON.parse(localStorage.getItem("home_care_user")); // Parse the stored JSON string
+
+  const token = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  let userRole;
+  if (token?.accessToken) {
+    userRole = jwtDecode(token?.accessToken);
+  }
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userRole?.role !== "admin") {
+      navigate("/signin");
+    }
+  }, [token?.accessToken]);
 
   const location = useLocation();
   const pathSegment = location.pathname.split("/").pop();
@@ -120,22 +138,7 @@ const DashboardLayout = () => {
       ),
       label: <NavLink to="categories">Categories</NavLink>,
     },
-    {
-      key: "settings",
-      icon: (
-        <img
-          src={AllIcons.five}
-          alt="settings"
-          width={20}
-          style={{
-            filter: location.pathname.includes("settings")
-              ? "brightness(0) invert(1)"
-              : undefined,
-          }}
-        />
-      ),
-      label: <NavLink to="settings">Settings</NavLink>,
-    },
+
     {
       key: "profile",
       icon: (
@@ -155,6 +158,22 @@ const DashboardLayout = () => {
       ),
       label: <NavLink to="profile">Profile</NavLink>,
     },
+    {
+      key: "settings",
+      icon: (
+        <img
+          src={AllIcons.five}
+          alt="settings"
+          width={20}
+          style={{
+            filter: location.pathname.includes("settings")
+              ? "brightness(0) invert(1)"
+              : undefined,
+          }}
+        />
+      ),
+      label: <NavLink to="settings">Settings</NavLink>,
+    },
   ];
 
   const companyMenuItems = [];
@@ -172,7 +191,7 @@ const DashboardLayout = () => {
         />
       ),
       label: (
-        <div onClick={() => localStorage.removeItem("home_care_user")}>
+        <div onClick={() => dispatch(clearAuth())}>
           <NavLink to="/signin">Logout</NavLink>
         </div>
       ),
@@ -228,7 +247,7 @@ const DashboardLayout = () => {
             top: 0,
             height: "100vh",
             overflowY: "auto",
-            overflowX:"hidden"
+            overflowX: "hidden",
           }}
         >
           <Link to="/">
@@ -264,7 +283,6 @@ const DashboardLayout = () => {
                 border: "none",
                 paddingLeft: "6px",
                 paddingRight: "6px",
-
               }}
               items={menuItems}
             />
