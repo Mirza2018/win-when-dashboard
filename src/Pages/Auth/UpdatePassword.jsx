@@ -2,12 +2,36 @@ import { Button, Form, Input, Typography } from "antd";
 
 import { useNavigate } from "react-router-dom";
 import { AuthImages } from "../../../public/images/AllImages";
+import { useForgotPassResetMutation } from "../../redux/api/authApi";
+import { toast } from "sonner";
 
 const UpdatePassword = () => {
+  const [resetPass] = useForgotPassResetMutation();
+  const [form] = Form.useForm();
   const navigate = useNavigate();
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Success:", values);
-    navigate("/signin");
+    // navigate("/signin");
+    const toastId = toast("Password reseting...");
+    try {
+      const res = await resetPass(values).unwrap();
+      console.log(res);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+
+      navigate("/signin");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.res?.message || "An error occured during Reset Password",
+        {
+          id: toastId,
+          duration: 2000,
+        }
+      );
+    }
   };
 
   return (
@@ -29,6 +53,7 @@ const UpdatePassword = () => {
         </div>
         {/* -------- Form Start ------------ */}
         <Form
+          form={form}
           layout="vertical"
           className="bg-transparent w-full"
           onFinish={onFinish}
@@ -43,7 +68,7 @@ const UpdatePassword = () => {
                 message: "New Password is Required",
               },
             ]}
-            name="password"
+            name="newPassword"
             className=""
           >
             <Input.Password
@@ -63,7 +88,7 @@ const UpdatePassword = () => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue("newPassword") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(

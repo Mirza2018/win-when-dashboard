@@ -4,8 +4,12 @@ import { IoChevronBackOutline } from "react-icons/io5";
 const SettingsUpdatePassword = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
-    localStorage.removeItem("home_care_user");
-    window.location.reload();
+    // localStorage.removeItem("home_care_user");
+    // window.location.reload();
+    const data = {
+      newPassword: "hello123",
+      confirmPassword: "hello123",
+    };
   };
   return (
     <div

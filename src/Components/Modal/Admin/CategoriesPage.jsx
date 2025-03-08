@@ -1,9 +1,10 @@
 import axios from "axios";
-import { ConfigProvider, Input } from "antd";
+import { ConfigProvider, Input, Spin } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import AddCompanyModal from "./AddCategoriesModal";
 import { useMemo, useState } from "react";
+import { useGetAllcategoryListQuery } from "../../../redux/api/categoryApi";
 
 const categories = [
   { id: 1, name: "sports" },
@@ -17,6 +18,8 @@ const categories = [
   { id: 9, name: "health" },
 ];
 const CategoriesPage = () => {
+  const { data, isLoading } = useGetAllcategoryListQuery();
+
   const [isAddCompanyModalVisible, setIsAddCompanyModalVisible] =
     useState(false);
   const [searchText, setSearchText] = useState("");
@@ -31,6 +34,13 @@ const CategoriesPage = () => {
   const showAddCompanyModal = () => {
     setIsAddCompanyModalVisible(true);
   };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin></Spin>;
+      </div>
+    );
+  }
   return (
     <div
       className="bg-highlight-color min-h-[90vh]  rounded-xl"
@@ -65,18 +75,19 @@ const CategoriesPage = () => {
       <AddCompanyModal
         isAddCompanyModalVisible={isAddCompanyModalVisible}
         handleCancel={handleCancel}
+        length={data?.data?.length}
       />
       <div className="flex  gap-5 p-5 justify-between items-center border-b border-secondary-color max-w-[400px] mx-auto">
         <h1 className="text-xl text-secondary-color">Category Serial</h1>
         <h1 className="text-xl text-secondary-color ">Category Name</h1>
       </div>
-      {categories.map((category) => (
+      {data?.data.map((category) => (
         <div className="flex  gap-5 p-5 justify-between items-center border-b border-base-color  max-w-[400px] mx-auto">
           <h1 className="text-lg text-black flex justify-center w-full">
-            {category.id}
+            {category?.serial}
           </h1>
           <h1 className="text-lg text-black flex justify-center w-full">
-            {category.name}
+            {category?.name}
           </h1>
         </div>
       ))}

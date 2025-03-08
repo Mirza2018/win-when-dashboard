@@ -3,6 +3,9 @@ import { Button, Space, Table, Tooltip } from "antd";
 import { GoEye } from "react-icons/go";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AllImages } from "../../../../public/images/AllImages";
+import { render } from "react-dom";
+import { getImageUrl } from "../../../redux/getBaseUrl";
+import { FaUserCircle } from "react-icons/fa";
 
 const AllUserTable = ({
   data,
@@ -14,22 +17,36 @@ const AllUserTable = ({
   const columns = [
     {
       title: "S.lD",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "key",
+      key: "key",
+      rowScope: "row",
+      render: (_, record, index) => <p>{index + 1}</p>,
       responsive: ["md"],
     },
     {
       title: "Full Name",
-      dataIndex: "userName",
-      key: "userName",
-      render: (text) => (
+      dataIndex: "fullName",
+      key: "fullName",
+      render: (_, record) => (
         <div className="flex items-center gap-2">
-          <img
-            src={AllImages.yellow}
-            alt={text}
-            className="w-8 h-8 rounded-full"
-          />
-          <p>{text}</p>
+          {(() => {
+            const url = getImageUrl()
+            return (
+              <>
+                {record?.profileImage ? (
+                  <img
+                    src={url + record?.profileImage}
+                    alt={record?.fullName}
+                    className="w-8 h-8 rounded-full"
+                  />
+                ) : (
+                  <FaUserCircle className="text-3xl text-gray-500" />
+                )}
+
+                <p className="whitespace-normal">{record?.fullName}</p>
+              </>
+            );
+          })()}
         </div>
       ),
     },
@@ -46,8 +63,20 @@ const AllUserTable = ({
     },
     {
       title: "Joining Date",
-      dataIndex: "joiningDate",
-      key: "joiningDate",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => (
+        <div className="flex items-center gap-2">
+          {(() => {
+            const date = new Date(text);
+            return (
+              <>
+                <p>{date.toLocaleDateString()}</p>
+              </>
+            );
+          })()}
+        </div>
+      ),
     },
 
     {
@@ -55,36 +84,54 @@ const AllUserTable = ({
       key: "action",
       render: (_, record) => (
         <>
-          <Space size="middle">
-            {/* Block User Tooltip */}
-            <Tooltip placement="left" title="Block this User">
-              <Button
-                className="!p-0"
-                style={{
-                  background: "#FFFFFF",
-                  border: "none",
-                  color: "#C50000",
-                }}
-                onClick={() => showCompanyBlockModal(record)}
-              >
-                <RiDeleteBin6Line style={{ fontSize: "24px" }} />
-              </Button>
-            </Tooltip>
-            {/* View Details Tooltip */}
-            <Tooltip placement="right" title="View Details">
-              <Button
-                className="!p-0"
-                style={{
-                  background: "#FFFFFF",
-                  border: "none",
-                  color: "#839F9F",
-                }}
-                onClick={() => showCompanyViewModal(record)}
-              >
-                <GoEye style={{ fontSize: "24px" }} />
-              </Button>
-            </Tooltip>
-          </Space>
+          {record.isBlocked ? (
+            <div className="flex justify-end items-center  w-fit text-end">
+              <Tooltip placement="left" title="View Details">
+                <p
+                  className="!p-0"
+                  style={{
+                    background: "#FFFFFF",
+                    border: "none",
+                    color: "#839F9F",
+                  }}
+                  onClick={() => showCompanyViewModal(record)}
+                >
+                  <GoEye style={{ fontSize: "24px" }} />
+                </p>
+              </Tooltip>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center text-cente gap-2 w-fit">
+              <Tooltip placement="left" title="View Details">
+                <p
+                  className="!p-0"
+                  style={{
+                    background: "#FFFFFF",
+                    border: "none",
+                    color: "#839F9F",
+                  }}
+                  onClick={() => showCompanyViewModal(record)}
+                >
+                  <GoEye style={{ fontSize: "24px" }} />
+                </p>
+              </Tooltip>
+              {/* Block User Tooltip */}
+              <Tooltip placement="right" title="Block this User">
+                <p
+                  className="!p-0"
+                  style={{
+                    background: "#FFFFFF",
+                    border: "none",
+                    color: "#C50000",
+                  }}
+                  onClick={() => showCompanyBlockModal(record)}
+                >
+                  <RiDeleteBin6Line style={{ fontSize: "24px" }} />
+                </p>
+              </Tooltip>
+              {/* View Details Tooltip */}
+            </div>
+          )}
         </>
       ),
     },

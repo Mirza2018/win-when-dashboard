@@ -9,20 +9,17 @@ const baseQuery = fetchBaseQuery({
   // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.accessToken;
-    const signUpToken = getFromLocalStorage("carTrading_createUserToken");
-
-    const changePassToken = getFromLocalStorage("carTrading_otp_match_token");
+    const forgotPassToken = getFromLocalStorage("carTrading-forgetToken");
+    const otpMatchToken = getFromLocalStorage("carTrading-otpMatchToken");
 
     if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+      headers.set("authorization", `${token}`);
     }
-
-    if (signUpToken) {
-      headers.set("token", `${signUpToken}`);
+    if (forgotPassToken) {
+      headers.set("token", `${forgotPassToken}`);
     }
-
-    if (changePassToken) {
-      headers.set("Forget-password", `Forget-password ${changePassToken}`);
+    if (otpMatchToken) {
+      headers.set("token", `${otpMatchToken}`);
     }
 
     return headers;

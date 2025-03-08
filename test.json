@@ -1,0 +1,14 @@
+{
+  "_id": "67cad1c2d572494926e026e6",
+  "fullName": "",
+  "email": "user@gmail.com",
+  "profileImage": "",
+  "role": "user",
+  "phone": "",
+  "about": "",
+  "isBlocked": false,
+  "isDeleted": false,
+  "profile": "67cad1c2d572494926e026e4",
+  "createdAt": "2025-03-07T11:00:18.884Z",
+  "updatedAt": "2025-03-08T03:00:36.282Z"
+}

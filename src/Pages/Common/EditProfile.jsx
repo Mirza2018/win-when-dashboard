@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { Button, ConfigProvider, Form, Input, Typography, Upload } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  DatePicker,
+  Form,
+  Input,
+  Typography,
+  Upload,
+} from "antd";
 import profileImage from "/images/profileImage.png";
 import { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
@@ -35,9 +43,21 @@ const EditProfile = () => {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
     console.log(imageUrl);
-    navigate("/admin/profile");
+    const formattedDate = values.dob.format("YYYY-MM-DD");
+    const image = values.image.fileList[0].originFileObj;
+    console.log(formattedDate, image);
+
+    const formData = new FormData();
+    const jsonData = {
+      fullName: "User 1",
+      about: "I am a tester",
+    };
+    formData.append("data", JSON.stringify(jsonData));
+    formData.append("image", image, image.name);
+
+    // formData.append("image", imageFile.originFileObj, imageFile.name);
+    // navigate("/admin/profile");
   };
 
   return (
@@ -169,15 +189,17 @@ const EditProfile = () => {
                 Date Of Birth
               </Typography.Title>
               <Form.Item
-                initialValue={profileData.dob}
+                // initialValue={profileData.dob}
                 name="dob"
                 className="text-white"
               >
-                <Input
+                {/* <Input
                   suffix={<MdOutlineEdit />}
                   placeholder="Enter your Date of Birth"
                   className="py-2 px-3 text-xl border  ! !bg-transparent"
-                />
+                /> */}
+
+                <DatePicker className="h-14 w-full" />
               </Form.Item>
               <Form.Item>
                 <Button

@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   const [emailData] = useUserForgotEmailMutation();
 
   const onFinish = async (values) => {
+    localStorage.removeItem("carTrading-otpMatchToken");
     console.log("Success:", values);
     // navigate("/verify-otp");
     const toastId = toast("Email sending...");

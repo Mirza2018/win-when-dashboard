@@ -1,25 +1,43 @@
-import { Button, Form } from "antd";
+import { Button, Form, message } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { AuthImages } from "../../../public/images/AllImages";
 import { useForgotPassOtpMutation } from "../../redux/api/authApi";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState("");
-    const [otpSubmit] = useForgotPassOtpMutation();
+  const [otpSubmit] = useForgotPassOtpMutation();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   const handleOTPSubmit = async () => {
+    const toastId = toast("Otp Sending...");
     console.log("OTP:", otp);
-    // navigate("/update-password");
+    const data = {
+      otp: otp,
+    }; 
     try {
-      const res = await otpSubmit(otp).unwrap();
+      const res = await otpSubmit(data).unwrap();
       console.log(res);
-      navigate("/sign-in");
+      localStorage.setItem(
+        "carTrading-otpMatchToken",
+        res?.data?.forgetOtpMatchToken
+      );
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+      navigate("/update-password");
     } catch (error) {
       console.log(error);
+      toast.error(
+        error?.res?.message ||
+          "An error occured during Send Opt Please try Again"
+      );
     }
   };
 
@@ -54,7 +72,7 @@ const OtpPage = () => {
                       hover:border-input-color focus:bg-transparent focus:border-input-color rounded-lg mr-[10px] sm:mr-[20px] "
                     value={otp}
                     onChange={setOtp}
-                    numInputs={4}
+                    numInputs={6}
                     renderInput={(props) => <input {...props} required />}
                   />
                 </div>

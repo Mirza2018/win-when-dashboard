@@ -11,6 +11,7 @@ const ViewUserModal = ({
   handleCompanyBlock,
   showCompanyBlockModal,
 }) => {
+  const date = new Date(currentCompanyRecord?.createdAt);
   return (
     <Modal
       title={
@@ -47,7 +48,7 @@ const ViewUserModal = ({
             <div className="text-lg w-[90%] mx-auto">
               <div className="sm:flex gap-1 sm:gap-2 mb-2">
                 <div className="font-bold">Name:</div>
-                <div>{currentCompanyRecord?.userName}</div>
+                <div>{currentCompanyRecord?.fullName}</div>
               </div>
 
               <div className="sm:flex gap-1 sm:gap-2 mb-2">
@@ -60,18 +61,20 @@ const ViewUserModal = ({
               </div>
               <div className="flex items-center gap-1 sm:gap-2 mb-2">
                 <div className="font-bold">Joining Date:</div>
-                <div>{currentCompanyRecord?.joiningDate}</div>
+                <div>{date.toLocaleDateString()}</div>
               </div>
             </div>
           </div>
         </div>
         <button
-          onClick={() => (
-            handleCompanyBlock(currentCompanyRecord), showCompanyBlockModal()
-          )}
-          className="bg-secondary-color text-primary-color py-3 text-xl font-semibold rounded-lg mt-8 w-full"
+          onClick={() => showCompanyBlockModal(currentCompanyRecord)}
+          className={`${
+            currentCompanyRecord?.isBlocked
+              ? "bg-secondary-color text-primary-color"
+              : " bg-red-500 text-primary-color"
+          }  py-3 text-xl font-semibold rounded-lg mt-8 w-full`}
         >
-          Block
+          {currentCompanyRecord?.isBlocked ? "Unblock" : " Block"}
         </button>
       </div>
     </Modal>

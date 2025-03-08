@@ -1,12 +1,26 @@
 /* eslint-disable react/prop-types */
 import { Button, ConfigProvider, Form, Input, Modal, Typography } from "antd";
+import { useCreateCtegoryMutation } from "../../../redux/api/categoryApi";
 
-const AddCategoriesModal = ({ isAddCompanyModalVisible, handleCancel }) => {
+const AddCategoriesModal = ({
+  isAddCompanyModalVisible,
+  handleCancel,
+  length,
+}) => {
+
+  const [addCategory] = useCreateCtegoryMutation();
   const [form] = Form.useForm();
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Service User:", values);
+    try {
+      const res = await addCategory(values).unwrap();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
     handleCancel();
     form.resetFields();
+    window.location.reload();
   };
   return (
     <ConfigProvider
@@ -44,10 +58,13 @@ const AddCategoriesModal = ({ isAddCompanyModalVisible, handleCancel }) => {
                   message: "Please enter Category Serial",
                 },
               ]}
+              initialValue={length + 1}
               name="serial"
               className=" "
             >
               <Input
+                readOnly
+                // defaultValue={length + 1}
                 placeholder="Enter Category Serial"
                 className="py-2 px-3 text-xl border !border-input-color !bg-transparent"
               />

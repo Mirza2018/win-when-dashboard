@@ -40,12 +40,15 @@ const BlockUserModal = ({
             Cancel
           </Button>
           <Button
-            className="text-xl py-5 px-8"
+            className={`text-xl py-5 px-8 ${
+              currentCompanyRecord?.isBlocked
+                ? "bg-secondary-color"
+                : " bg-[#CE0000]"
+            }`}
             type="primary"
-            style={{ background: "#CE0000" }}
             onClick={() => handleCompanyBlock(currentCompanyRecord)}
           >
-            Block
+            {currentCompanyRecord?.isBlocked ? "Unblock" : " Block"}
           </Button>
         </div>
       }

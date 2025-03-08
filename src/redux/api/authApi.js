@@ -21,54 +21,33 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+
     userForgotEmail: build.mutation({
       query: (emailData) => ({
-        url: `forgot-password-otp-match`,
-        method: "PATCH",
+        url: `/auth/forgot-password-otpByEmail`,
+        method: "POST",
         body: emailData,
       }),
       invalidatesTags: [tagTypes.user],
     }),
 
-    // verifiedEmail: build.mutation({
-    //   query: (otpData) => {
-    //     const token = localStorage.getItem("carTrading_createUserToken");
-    //     return {
-    //       url: `${AUTH_URL}/auth/verify-email`,
-    //       method: "POST",
-    //       body: otpData,
-    //       // headers: {
-    //       //   SignUpToken: `signUpToken ${token}`,
-    //       //   "Content-Type": "application/json",
-    //       // },
-    //     };
-    //   },
-    //   invalidatesTags: [tagTypes.user],
-    // }),
-
-    userOtp: build.mutation({
+    forgotPassOtp: build.mutation({
       query: (otpData) => {
-        const token = localStorage.getItem("carTrading_createUserToken");
-        console.log("token from api ", token);
-
         return {
-          url: `/users/create-user-verify-otp`,
-          method: "POST",
+          url: `/auth/forgot-password-otp-match`,
+          method: "PATCH",
           body: otpData,
         };
       },
       invalidatesTags: [tagTypes.user],
     }),
 
-    forgotPassOtp: build.mutation({
-      query: (otpData) => {
-        const token = localStorage.getItem("carTrading_createUserToken");
-        console.log("/auth/forgot-password-otp-match ");
-
+    forgotPassReset: build.mutation({
+      query: (resetPass) => {
         return {
-          url: `/users/create-user-verify-otp`,
+          url: `/auth/forgot-password-reset`,
           method: "PATCH",
-          body: otpData,
+          body: resetPass,
         };
       },
       invalidatesTags: [tagTypes.user],
@@ -79,7 +58,7 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useUserLoginMutation,
   useUserSignUpMutation,
-  useUserOtpMutation,
   useUserForgotEmailMutation,
   useForgotPassOtpMutation,
+  useForgotPassResetMutation
 } = authApi;
