@@ -2,13 +2,36 @@ import { Button } from "antd";
 import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { toast } from "sonner";
+import { usePrivacyTermsMutation } from "../../../redux/api/settingsApi";
 
 const TermsOfService = () => {
+  const [trams] = usePrivacyTermsMutation();
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  const handleOnSave = () => {
-    console.log("Saved PP");
+  const handleOnSave = async () => {
+    const toastId = toast.loading("Terms and condition is Updateing...");
+    console.log(content);
+    const data = {
+      key: "term_condition",
+      content: content,
+    };
+
+    try {
+      const res = await trams(data).unwrap();
+      console.log(res);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.data?.message || "error", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
   };
 
   return (

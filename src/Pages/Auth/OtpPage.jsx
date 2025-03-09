@@ -11,7 +11,7 @@ const OtpPage = () => {
   const [otp, setOtp] = useState("");
   const [otpSubmit] = useForgotPassOtpMutation();
   const dispatch = useDispatch();
-
+ 
   const navigate = useNavigate();
 
   const handleOTPSubmit = async () => {

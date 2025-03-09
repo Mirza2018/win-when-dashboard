@@ -5,6 +5,7 @@ import RecentUserTable from "../../Components/Tables/RecentUserTable";
 
 import UserRatioBarChart from "../../Components/Chart/UserRatioBarChart";
 import { useSelector } from "react-redux";
+import { useGetAllusersListQuery } from "../../redux/api/usersApi";
 
 // const activities = [
 //   {
@@ -104,14 +105,11 @@ import { useSelector } from "react-redux";
 //   },
 // ];
 const AdminDashboard = () => {
-  const user = JSON.parse(localStorage.getItem("home_care_user"));
+  const { data, error, isLoading } = useGetAllusersListQuery();
   const [recentUserData, setRecentUserData] = useState([]);
   const [recentUserLoading, setRecentUserLoading] = useState(true);
   const [recentCompanyData, setRecentCompanyData] = useState([]);
   const [recentCompanyLoading, setRecentCompanyLoading] = useState(true);
-
-  
-
 
   useEffect(() => {
     const fetchRecentUserData = async () => {
@@ -122,7 +120,7 @@ const AdminDashboard = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setRecentUserLoading(false);
+        setRecentUserLoading(isLoading);
       }
     };
 
@@ -142,6 +140,8 @@ const AdminDashboard = () => {
     fetchRecentCompanyData();
   }, []);
 
+  console.log(data?.data.length);
+
   return (
     <div>
       <>
@@ -159,17 +159,14 @@ const AdminDashboard = () => {
                       Total Users
                     </p>
                     <p className="text-xs lg:text-sm xl:text-xl  mb-1 text-secondary-color">
-                      780
+                      {data?.data.length}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             {/* State */}
-            <div
-              className="w-full h-fit  rounded-xl"
-             
-            >
+            <div className="w-full h-fit  rounded-xl">
               <UserRatioBarChart />
             </div>
           </div>
@@ -185,7 +182,7 @@ const AdminDashboard = () => {
           style={{ boxShadow: "0px 0px 2px 1px #00000030" }}
         >
           {/* Recent User table  */}
-          <RecentUserTable data={recentUserData} loading={recentUserLoading} />
+          <RecentUserTable data={data?.data} loading={isLoading} />
         </div>
       </>
     </div>

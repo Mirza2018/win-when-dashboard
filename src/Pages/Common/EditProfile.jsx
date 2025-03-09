@@ -5,33 +5,53 @@ import {
   DatePicker,
   Form,
   Input,
+  Spin,
   Typography,
   Upload,
 } from "antd";
-import profileImage from "/images/profileImage.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoCameraOutline, IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
+import {
+  useGetProfileQuery,
+  useProfileUpdsateMutation,
+} from "../../redux/api/profileApi";
+import { toast } from "sonner";
+import { getImageUrl } from "../../redux/getBaseUrl";
 
 const EditProfile = () => {
-  const navigate = useNavigate();
-  const profileData = {
-    firstName: "James",
-    LastName: "Mitchell",
-    email: "emily@gmail.com",
-    contactNumber: "+880171139055",
-    dob: "10-10-1998",
-  };
+  const { data, isLoading } = useGetProfileQuery();
+  const myProfile = data?.data?.result;
+  const newDate = new Date(myProfile?.dateOfBirth);
 
-  const [imageUrl, setImageUrl] = useState(profileImage);
+  console.log(newDate, "kdjfuihuy");
+
+  const [updateProfile] = useProfileUpdsateMutation();
+  const navigate = useNavigate();
+  // const profileData = {
+  //   firstName: "James",
+  //   LastName: "Mitchell",
+  //   address: "emily@gmail.com",
+  //   contactNumber: "+880171139055",
+  //   dob: "10-10-1998",
+  // };
+
+  const [imageUrl, setImageUrl] = useState(
+    getImageUrl() + myProfile?.profileImage
+  );
+
+  useEffect(() => {
+    setImageUrl(getImageUrl() + myProfile?.profileImage);
+  }, [myProfile]);
 
   const handleImageUpload = (info) => {
     if (info.file.status === "removed") {
-      setImageUrl(profileImage); // Reset to null or fallback image
+      setImageUrl(getImageUrl() + myProfile?.profileImage); // Reset to null or fallback image
     } else {
       const file = info.file.originFileObj || info.file; // Handle the file object safely
       if (file) {
@@ -42,23 +62,54 @@ const EditProfile = () => {
     }
   };
 
-  const onFinish = (values) => {
-    console.log(imageUrl);
-    const formattedDate = values.dob.format("YYYY-MM-DD");
-    const image = values.image.fileList[0].originFileObj;
-    console.log(formattedDate, image);
-
+  const onFinish = async (values) => {
+    const toastId = toast.loading("Profile Updateing...");
     const formData = new FormData();
+
+    const formattedDate = values?.dob?.format("YYYY-MM-DD");
+    const image = values.image?.fileList[0]?.originFileObj;
+    if (values.image) {
+      formData.append("image", image, image?.name);
+    }
+
     const jsonData = {
-      fullName: "User 1",
-      about: "I am a tester",
+      fullName: values?.fullName,
+      // about: "I am a tester",
+      address: values?.address,
+      phone: values?.contactNumber,
+      dateOfBirth: formattedDate,
     };
     formData.append("data", JSON.stringify(jsonData));
-    formData.append("image", image, image.name);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    try {
+      const res = await updateProfile(formData).unwrap();
+      console.log("I am from profile update", res);
+      toast.success(res?.message || "profile updated successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+      navigate("/admin/profile");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || "error", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
 
     // formData.append("image", imageFile.originFileObj, imageFile.name);
-    // navigate("/admin/profile");
   };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Spin tip="Loading" size="large"></Spin>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -84,9 +135,9 @@ const EditProfile = () => {
             <div className="mt-5 flex flex-col justify-center items-center gap-x-4">
               <div className=" relative">
                 <img
-                  className="h-40 w-40 relative rounded-full border border-secondary-color object-contain"
+                  className="h-40 w-40 relative rounded-full border bg-base-color border-secondary-color object-contain"
                   src={imageUrl}
-                  alt=""
+                  alt="Profile Image"
                 />
                 <Form.Item name="image">
                   <Upload
@@ -117,60 +168,38 @@ const EditProfile = () => {
                 </Form.Item>
               </div>
               <p className="text-center text-2xl font-medium">Admin</p>
-              <p className="text-3xl font-medium">
-                {profileData.firstName} {profileData.LastName}
-              </p>
+              <p className="text-3xl font-medium">{myProfile?.fullName}</p>
             </div>
 
             <div className=" col-span-2 text-white mt-5">
-              <div className="flex flex-wrap gap-5">
-                <div className="flex-1">
-                  <Typography.Title level={5} style={{ color: "#222222" }}>
-                    First Name
-                  </Typography.Title>
-                  <Form.Item
-                    initialValue={profileData.firstName}
-                    name="firstName"
-                    className="text-white "
-                  >
-                    <Input
-                      suffix={<MdOutlineEdit />}
-                      type="text"
-                      placeholder="Enter your first name"
-                      className="py-2 px-3 text-xl border  ! !bg-transparent"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="flex-1">
-                  <Typography.Title level={5} style={{ color: "#222222" }}>
-                    Last Name
-                  </Typography.Title>
-                  <Form.Item
-                    initialValue={profileData.LastName}
-                    name="lastName"
-                    className="text-white "
-                  >
-                    <Input
-                      suffix={<MdOutlineEdit />}
-                      type="text"
-                      placeholder="Enter your last name"
-                      className="py-2 px-3 text-xl border  ! !bg-transparent"
-                    />
-                  </Form.Item>
-                </div>
-              </div>
               <Typography.Title level={5} style={{ color: "#222222" }}>
-                Email
+                First Name
               </Typography.Title>
               <Form.Item
-                initialValue={profileData.email}
-                name="email"
+                initialValue={myProfile?.fullName}
+                name="fullName"
                 className="text-white "
               >
                 <Input
                   suffix={<MdOutlineEdit />}
-                  type="email"
-                  placeholder="Enter your email"
+                  type="text"
+                  placeholder="Enter your first name"
+                  className="py-2 px-3 text-xl border  ! !bg-transparent"
+                />
+              </Form.Item>
+
+              <Typography.Title level={5} style={{ color: "#222222" }}>
+                Address
+              </Typography.Title>
+              <Form.Item
+                initialValue={myProfile?.address}
+                name="address"
+                className="text-white "
+              >
+                <Input
+                  suffix={<MdOutlineEdit />}
+                  type="text"
+                  placeholder="Enter your Address"
                   className="py-2 px-3 text-xl border  ! !bg-transparent"
                 />
               </Form.Item>
@@ -179,7 +208,7 @@ const EditProfile = () => {
               </Typography.Title>
 
               <Form.Item
-                initialValue={profileData.contactNumber}
+                initialValue={myProfile?.phone}
                 name="contactNumber"
                 className="text-white"
               >
@@ -189,17 +218,14 @@ const EditProfile = () => {
                 Date Of Birth
               </Typography.Title>
               <Form.Item
-                // initialValue={profileData.dob}
+                // initialValue={newDate}
                 name="dob"
                 className="text-white"
               >
-                {/* <Input
+                <DatePicker
                   suffix={<MdOutlineEdit />}
-                  placeholder="Enter your Date of Birth"
-                  className="py-2 px-3 text-xl border  ! !bg-transparent"
-                /> */}
-
-                <DatePicker className="h-14 w-full" />
+                  className="h-14 w-full"
+                />
               </Form.Item>
               <Form.Item>
                 <Button

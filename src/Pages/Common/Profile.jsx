@@ -1,18 +1,26 @@
-import { Form, Input, Typography } from "antd";
+import { Form, Input, Spin, Typography } from "antd";
 import profileImage from "/images/profileImage.png";
 import { EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
 import PhoneInput from "react-phone-input-2";
+import { useGetProfileQuery } from "../../redux/api/profileApi";
+import { getImageUrl } from "../../redux/getBaseUrl";
 
 const Profile = () => {
-  const profileData = {
-    firstName: "James",
-    LastName: "Mitchell",
-    email: "emily@gmail.com",
-    contactNumber: "88017707139055",
-    dob: "10-10-1998",
-  };
+  const { data, isLoading } = useGetProfileQuery();
+  const myProfile = data?.data?.result;
+
+  if (isLoading) {
+     return (
+       <div className="flex justify-center items-center">
+         <Spin tip="Loading" size="large"></Spin>
+       </div>
+     );
+  }
+
+  const date = myProfile?.dateOfBirth.slice(0,10)
+
 
   return (
     <div
@@ -44,51 +52,36 @@ const Profile = () => {
         <div className=" rounded-lg h-full w-full md:grid grid-cols-3">
           <div className="flex flex-col items-center justify-between">
             <div className="flex flex-col items-center justify-center gap-5">
-              <img className="h-36 w-36 relative" src={profileImage} alt="" />
+              <img
+                className="h-36 aspect-square relative rounded-full object-cover object-top bg-base-color"
+                src={getImageUrl() + myProfile?.profileImage}
+                alt="Profile Image"
+              />
               <p className="text-center text-2xl font-medium">Admin</p>
-              <p className="text-3xl font-medium">
-                {profileData.firstName} {profileData.LastName}
-              </p>
+              <p className="text-3xl font-medium">{myProfile?.fullName}</p>
             </div>
           </div>
 
           <div className="col-span-2 flex flex-col items-center text-white mt-5">
             <Form layout="vertical" className="bg-transparent p-4 w-full">
-              <div className="flex flex-wrap gap-5">
-                <div className="flex-1">
-                  <Typography.Title level={5} style={{ color: "#222222" }}>
-                    First Name
-                  </Typography.Title>
-                  <Form.Item className="text-white">
-                    <Input
-                      readOnly
-                      value={profileData.firstName}
-                      placeholder="Enter your first name"
-                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
-                    />
-                  </Form.Item>
-                </div>
-                <div className="flex-1">
-                  <Typography.Title level={5} style={{ color: "#222222" }}>
-                    Last Name
-                  </Typography.Title>
-                  <Form.Item className="text-white">
-                    <Input
-                      readOnly
-                      value={profileData.LastName}
-                      placeholder="Enter your last name"
-                      className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
-                    />
-                  </Form.Item>
-                </div>
-              </div>
+              <Typography.Title level={5} style={{ color: "#222222" }}>
+                FUll Name
+              </Typography.Title>
+              <Form.Item className="text-white">
+                <Input
+                  readOnly
+                  value={myProfile?.fullName}
+                  placeholder="Edit your full name"
+                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
+                />
+              </Form.Item>
 
               <Typography.Title level={5} style={{ color: "#222222" }}>
-                Email
+                Address
               </Typography.Title>
               <Form.Item className="text-white ">
                 <Input
-                  value={profileData.email}
+                  value={myProfile?.address}
                   readOnly
                   className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                 />
@@ -97,33 +90,20 @@ const Profile = () => {
                 Phone Number
               </Typography.Title>
               <Form.Item className="text-white ">
-                {/* <Input
-                  value={profileData.contactNumber}
-                  placeholder="Enter your phone number"
-                  readOnly
-                  className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
-                /> */}
-
                 <PhoneInput
-                  value={profileData.contactNumber}
+                  value={myProfile?.phone}
                   className=""
                   enableSearch={true}
                 />
               </Form.Item>
-              {/* <Form.Item
-                initialValue={profileData.contactNumber}
-                name="contactNumber"
-                className="text-white"
-              > */}
-              {/* <PhoneInput className="" enableSearch={true} /> */}
-              {/* </Form.Item> */}
+
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Date Of Birth
               </Typography.Title>
               <Form.Item className="text-white">
                 <Input
                   readOnly
-                  value={profileData.dob}
+                  value={date}
                   placeholder="Enter Date of Birth"
                   className="cursor-not-allowed py-2 px-3 text-xl bg-site-color border  hover:bg-transparent hover:border-secoundary-color focus:bg-transparent focus:border-secoundary-color"
                 />

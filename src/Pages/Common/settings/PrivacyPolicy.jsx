@@ -2,13 +2,36 @@ import { Button } from "antd";
 import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
+import { usePrivacyTermsMutation } from "../../../redux/api/settingsApi";
+import { toast } from "sonner";
 
 const PrivacyPolicy = () => {
+  const [privacy] = usePrivacyTermsMutation();
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  const handleOnSave = () => {
+  const handleOnSave = async () => {
+    const toastId = toast.loading("Privacy Policy is Updateing...");
     console.log(content);
+    const data = {
+      key: "privacy_policy",
+      content: content,
+    };
+
+    try {
+      const res = await privacy(data).unwrap();
+      console.log(res);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.data?.message || "error", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
   };
 
   return (

@@ -7,13 +7,17 @@
 
   border: 1px solid #839f9f !important;
 }
-.country-name{
+.country-name {
   color: black;
 }
- .noText .ant-upload-list-text {
-  width:150px  !important;
+.noText .ant-upload-list-text {
+  width: 150px !important;
   text-align: start;
+}
 
+.search-input .ant-input > input::placeholder {
+  color: black;
+  font-size: 20px;
 }
 
 ::-webkit-scrollbar {

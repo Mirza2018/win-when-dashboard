@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { AuthImages } from "../../../public/images/AllImages";
 import { useUserForgotEmailMutation } from "../../redux/api/authApi";
 import { toast } from "sonner";
-
+ 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [emailData] = useUserForgotEmailMutation();
 
   const onFinish = async (values) => {
     localStorage.removeItem("carTrading-otpMatchToken");
+    localStorage.removeItem("carTrading-forgetToken");
     console.log("Success:", values);
     // navigate("/verify-otp");
     const toastId = toast("Email sending...");

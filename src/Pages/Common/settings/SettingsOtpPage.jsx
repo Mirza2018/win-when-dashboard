@@ -3,17 +3,42 @@ import { useState } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
 import OTPInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
+import { useForgotPassOtpMutation } from "../../../redux/api/authApi";
+import { toast } from "sonner";
 
 const SettingsOtpPage = () => {
   const [otp, setOtp] = useState("");
-
+  const [otpSubmit] = useForgotPassOtpMutation();
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("home_care_user"));
-
-  const handleOTPSubmit = () => {
+  const handleOTPSubmit = async () => {
     console.log("OTP:", otp);
-    navigate(`/${user.role}/settings/update-password`);
+    // navigate(`/${user.role}/settings/update-password`);
+
+    const toastId = toast("Otp Sending...");
+    console.log("OTP:", otp);
+    const data = {
+      otp: otp,
+    };
+    try {
+      const res = await otpSubmit(data).unwrap();
+      console.log(res);
+      localStorage.setItem(
+        "carTrading-otpMatchToken",
+        res?.data?.forgetOtpMatchToken
+      );
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+      navigate("/admin/settings/update-password");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.res?.message ||
+          "An error occured during Send Opt Please try Again"
+      );
+    }
   };
 
   return (
@@ -51,7 +76,7 @@ const SettingsOtpPage = () => {
                        focus:bg-transparent rounded-lg mr-[10px] sm:mr-[20px] "
                   value={otp}
                   onChange={setOtp}
-                  numInputs={4}
+                  numInputs={6}
                   renderInput={(props) => <input {...props} required />}
                 />
               </div>
@@ -59,7 +84,7 @@ const SettingsOtpPage = () => {
             <div className="flex justify-between py-1">
               <p className="  text-lg">Didn’t get OTP?</p>
               <Link
-                to={`/${user.role}/settings/otp-page`}
+                to={`/admin/settings/otp-page`}
                 className="text-black hover:text-secondary-color text-lg"
               >
                 Resend

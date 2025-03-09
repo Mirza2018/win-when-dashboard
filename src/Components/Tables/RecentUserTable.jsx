@@ -11,16 +11,14 @@ import AllCompanyTable from "./Admin/AllUserTable";
 import AddCompanyModal from "../Modal/Admin/AddCategoriesModal";
 import ViewCompanyModal from "../Modal/Admin/ViewUserModal";
 import BlockCompanyModal from "../Modal/Admin/BlockUserModal";
+import AllUserTable from "./Admin/AllUserTable";
+import ViewUserModal from "../Modal/Admin/ViewUserModal";
+import BlockUserModal from "../Modal/Admin/BlockUserModal";
+import { toast } from "sonner";
+import { useUserBlockMutation } from "../../redux/api/usersApi";
 
-const RecentUserTable = () => {
-  //* Store Search Value
-  const [searchText, setSearchText] = useState("");
-
-  //* Use to set user
-  const [data, setData] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
+const RecentUserTable = ({ data: users, loading: isLoading }) => {
+    const [blockUser] = useUserBlockMutation();
   //* It's Use to Show Modal
   const [isCompanyViewModalVisible, setIsCompanyViewModalVisible] =
     useState(false);
@@ -35,32 +33,6 @@ const RecentUserTable = () => {
 
   //* It's Use to Set Seclected User to Block and view
   const [currentCompanyRecord, setCurrentCompanyRecord] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-        setData(response?.data); // Make sure this is an array
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const filteredCompanyData = useMemo(() => {
-    if (!searchText) return data;
-    return data.filter((item) =>
-      item.companyName.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [data, searchText]);
-
-  const onSearch = (value) => {
-    setSearchText(value);
-  };
 
   const showAddCompanyModal = () => {
     setIsAddCompanyModalVisible(true);
@@ -82,11 +54,45 @@ const RecentUserTable = () => {
     setIsAddCompanyModalVisible(false);
   };
 
-  const handleCompanyBlock = (data) => {
-    console.log("Blocked Company:", {
-      id: data?.id,
-      companyName: data?.companyName,
-    });
+  const handleCompanyBlock = async (data) => {
+    let toastId;
+    if (data?.isBlocked) {
+      toastId = toast.loading("User is Unblocking....");
+    } else {
+      toastId = toast.loading("User is Blocking....");
+    }
+
+    const id = data?._id;
+    if (id) {
+      try {
+        const res = await blockUser(id);
+        console.log(res?.data?.message);
+
+        toast.success(
+          res?.message || res?.data?.message || res?.error?.data?.message,
+          {
+            id: toastId,
+            duration: 2000,
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          error?.data?.res?.message ||
+            error?.error ||
+            "An error occurred during block User",
+          {
+            id: toastId,
+            duration: 2000,
+          }
+        );
+      }
+    } else {
+      toast.error("An error occurred during block User", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
     setIsCompanyViewModalVisible(false);
     setIsCompanyBlockModalVisible(false);
   };
@@ -106,9 +112,17 @@ const RecentUserTable = () => {
 
       {/* Table  */}
       <div className="">
-        <AllCompanyTable
-          data={filteredCompanyData}
-          loading={loading}
+        {/* <AllCompanyTable
+          data={users}
+          loading={isLoading}
+          showCompanyViewModal={showCompanyViewModal}
+          showCompanyBlockModal={showCompanyBlockModal}
+          pageSize={2}
+        /> */}
+
+        <AllUserTable
+          data={users}
+          loading={isLoading}
           showCompanyViewModal={showCompanyViewModal}
           showCompanyBlockModal={showCompanyBlockModal}
           pageSize={2}
@@ -120,14 +134,15 @@ const RecentUserTable = () => {
         isAddCompanyModalVisible={isAddCompanyModalVisible}
         handleCancel={handleCancel}
       />
-      <ViewCompanyModal
+      <ViewUserModal
         isCompanyViewModalVisible={isCompanyViewModalVisible}
         handleCancel={handleCancel}
         currentCompanyRecord={currentCompanyRecord}
         handleCompanyBlock={handleCompanyBlock}
         showCompanyBlockModal={showCompanyBlockModal}
       />
-      <BlockCompanyModal
+
+      <BlockUserModal
         isCompanyBlockModalVisible={isCompanyBlockModalVisible}
         handleCompanyBlock={handleCompanyBlock}
         handleCancel={handleCancel}

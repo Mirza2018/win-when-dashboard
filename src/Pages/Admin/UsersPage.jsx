@@ -112,7 +112,7 @@ const UsersPage = () => {
     if (data?.isBlocked) {
       toastId = toast.loading("User is Unblocking....");
     } else {
-        toastId = toast.loading("User is Blocking....");
+      toastId = toast.loading("User is Blocking....");
     }
 
     const id = data?._id;
@@ -170,10 +170,10 @@ const UsersPage = () => {
               theme={{ token: { colorTextPlaceholder: "#f3f3f3" } }}
             >
               <Input
-                placeholder="Search User..."
+                placeholder={`search User...`}
                 value={searchText}
                 onChange={(e) => onSearch(e.target.value)}
-                className="font-semibold !border-primary-color !placeholder:text-secondary-color !bg-white text-secondary-color py-2 !rounded-full"
+                className="search-input font-semibold !border-primary-color !placeholder:text-secondary-color !bg-white text-secondary-color py-2 !rounded-full"
                 prefix={
                   <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />
                 }

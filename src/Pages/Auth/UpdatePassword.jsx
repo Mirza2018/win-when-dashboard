@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { AuthImages } from "../../../public/images/AllImages";
 import { useForgotPassResetMutation } from "../../redux/api/authApi";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { clearAuth } from "../../redux/slices/authSlice";
 
 const UpdatePassword = () => {
   const [resetPass] = useForgotPassResetMutation();
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const onFinish = async (values) => {
@@ -22,6 +25,9 @@ const UpdatePassword = () => {
       });
 
       navigate("/signin");
+      localStorage.removeItem("carTrading-otpMatchToken");
+      localStorage.removeItem("carTrading-forgetToken");
+      dispatch(clearAuth());
     } catch (error) {
       console.log(error);
       toast.error(

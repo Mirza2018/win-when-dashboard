@@ -1,13 +1,40 @@
 import { Button, Form, Input, Typography } from "antd";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { usePassResetMutation } from "../../../redux/api/authApi";
+import { toast } from "sonner";
 
 const SettingsChangePassword = () => {
-  const user = JSON.parse(localStorage.getItem("home_care_user"));
-  const onFinish = (values) => {
+  const [resetPass] = usePassResetMutation();
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    const toastId = toast("Password reseting...");
     console.log("Success:", values);
-    localStorage.removeItem("home_care_user");
-    window.location.reload();
+    const data = {
+      oldPassword: values?.currentPassword,
+      newPassword: values?.newPassword,
+    };
+
+    try {
+      const res = await resetPass(data).unwrap();
+      console.log(res);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+
+      // navigate("/signin");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.data?.message || "An error occured during Reset Password",
+        {
+          id: toastId,
+          duration: 2000,
+        }
+      );
+    }
   };
   return (
     <div
@@ -28,6 +55,7 @@ const SettingsChangePassword = () => {
       <div className="md:p-14 lg:p-20 flex justify-center items-center">
         <div className="w-full">
           <Form
+            form={form}
             onFinish={onFinish}
             layout="vertical"
             className="bg-transparent w-full"
@@ -94,7 +122,7 @@ const SettingsChangePassword = () => {
             </Form.Item>
             <div className=" text-end">
               <Link
-                to={`/${user?.role}/settings/forgot-password`}
+                to={`/admin/settings/forgot-password`}
                 className="!text-secondary-color text-lg !underline"
               >
                 Forgot Password?

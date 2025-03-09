@@ -1,13 +1,41 @@
 import { Button, Form, Input, Typography } from "antd";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useUserForgotEmailMutation } from "../../../redux/api/authApi";
+import { toast } from "sonner";
 
 const SettingsForgotPassword = () => {
   const navigate = useNavigate();
+  const [emailData] = useUserForgotEmailMutation();
   const user = JSON.parse(localStorage.getItem("home_care_user"));
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    localStorage.removeItem("carTrading-otpMatchToken");
+    localStorage.removeItem("carTrading-forgetToken");
     console.log("Success:", values);
-    navigate(`/${user.role}/settings/otp-page`);
+
+    localStorage.removeItem("carTrading-otpMatchToken");
+    console.log("Success:", values);
+
+    const toastId = toast("Email sending...");
+    console.log(values);
+    try {
+      const res = await emailData(values).unwrap();
+      console.log(res);
+      localStorage.setItem("carTrading-forgetToken", res?.data?.forgetToken);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+      navigate("/admin/settings/otp-page");
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.data?.message || "An error occurred during Signup", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+
+    // navigate(`/${user.role}/settings/otp-page`);
   };
   return (
     <div

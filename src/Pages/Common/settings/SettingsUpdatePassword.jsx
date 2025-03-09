@@ -1,15 +1,45 @@
 import { Button, Form, Input, Typography } from "antd";
 import { IoChevronBackOutline } from "react-icons/io5";
+import {
+  useForgotPassResetMutation,
+  usePassResetMutation,
+} from "../../../redux/api/authApi";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { clearAuth } from "../../../redux/slices/authSlice";
 
 const SettingsUpdatePassword = () => {
-  const onFinish = (values) => {
+  const [resetPass] = useForgotPassResetMutation();
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const onFinish = async (values) => {
     console.log("Success:", values);
-    // localStorage.removeItem("home_care_user");
-    // window.location.reload();
-    const data = {
-      newPassword: "hello123",
-      confirmPassword: "hello123",
-    };
+    // navigate("/signin");
+    const toastId = toast("Password reseting...");
+    try {
+      const res = await resetPass(values).unwrap();
+      console.log(res);
+      toast.success(res?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+
+      navigate("/signin");
+      localStorage.removeItem("carTrading-otpMatchToken");
+      localStorage.removeItem("carTrading-forgetToken");
+      dispatch(clearAuth());
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.res?.message || "An error occured during Reset Password",
+        {
+          id: toastId,
+          duration: 2000,
+        }
+      );
+    }
   };
   return (
     <div
@@ -39,6 +69,7 @@ const SettingsUpdatePassword = () => {
             </p>
           </div>
           <Form
+            form={form}
             onFinish={onFinish}
             layout="vertical"
             className="bg-transparent w-full"
@@ -62,7 +93,7 @@ const SettingsUpdatePassword = () => {
               Re-enter new Password
             </Typography.Title>
             <Form.Item
-              name="reEnterPassword"
+              name="confirmPassword"
               className="text-white"
               rules={[
                 { required: true, message: "Please confirm your password!" },
