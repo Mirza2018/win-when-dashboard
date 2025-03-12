@@ -40,6 +40,16 @@ const SettingsPage = () => {
           </div>
         </div>
       </Link>
+      <Link to={`about-us`}>
+        <div className="flex items-center justify-between me-20 border-b-2 border-[#9D9FA2]  max-w-[1000px] min-w-36 p-3 cursor-pointer">
+          <h1 className="text-2xl hover:text-secondary-color">
+            About Us
+          </h1>
+          <div>
+            <IoChevronForwardOutline className="text-3xl cursor-pointer  font-semibold" />
+          </div>
+        </div>
+      </Link>
     </div>
   );
 };

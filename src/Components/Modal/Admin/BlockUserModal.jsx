@@ -27,7 +27,7 @@ const BlockUserModal = ({
             paddingBottom: "40px",
             marginTop: "30px",
           }}
-        >
+        > 
           <Button
             className="text-xl py-5 px-8 !text-black"
             type="primary"

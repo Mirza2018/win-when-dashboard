@@ -20,7 +20,7 @@ const AddCategoriesModal = ({
     }
     handleCancel();
     form.resetFields();
-    window.location.reload();
+    // window.location.reload();
   };
   return (
     <ConfigProvider

@@ -1,146 +1,16 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { AllIcons } from "../../../public/images/AllImages";
 import RecentUserTable from "../../Components/Tables/RecentUserTable";
 
 import UserRatioBarChart from "../../Components/Chart/UserRatioBarChart";
-import { useSelector } from "react-redux";
-import { useGetAllusersListQuery } from "../../redux/api/usersApi";
+import { useUserRatioQuery } from "../../redux/api/profileApi";
+import { useState } from "react";
 
-// const activities = [
-//   {
-//     id: "1",
-//     activity: "You added a company successfully.",
-//     description:
-//       "You added a company to your app successfully. Now they can add users.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "2",
-//     activity: "A company added 6 Service Users.",
-//     description: "A company added 6 Service Users to your app.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "3",
-//     activity: "A company added 4 Carers.",
-//     description: "A company added 4 Carers to your app.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "4",
-//     activity: "You added a company successfully.",
-//     description:
-//       "You added a company to your app successfully. Now they can add users.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "5",
-//     activity: "A company added 6 Service Users.",
-//     description: "A company added 6 Service Users to your app.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "6",
-//     activity: "A company added 4 Carers.",
-//     description: "A company added 4 Carers to your app.",
-//     time: "2:00 PM",
-//   },
-//   {
-//     id: "7",
-//     activity: "A company added 8 Service Users.",
-//     description: "A company added 8 Service Users to your app.",
-//     time: "3:00 PM",
-//   },
-//   {
-//     id: "8",
-//     activity: "You added a company successfully.",
-//     description:
-//       "You added a company to your app successfully. Now they can add users.",
-//     time: "3:30 PM",
-//   },
-//   {
-//     id: "9",
-//     activity: "A company added 5 Carers.",
-//     description: "A company added 5 Carers to your app.",
-//     time: "4:00 PM",
-//   },
-//   {
-//     id: "10",
-//     activity: "A company added 3 Service Users.",
-//     description: "A company added 3 Service Users to your app.",
-//     time: "4:15 PM",
-//   },
-//   {
-//     id: "11",
-//     activity: "A company added 7 Carers.",
-//     description: "A company added 7 Carers to your app.",
-//     time: "5:00 PM",
-//   },
-//   {
-//     id: "12",
-//     activity: "You added a company successfully.",
-//     description:
-//       "You added a company to your app successfully. Now they can add users.",
-//     time: "5:30 PM",
-//   },
-//   {
-//     id: "13",
-//     activity: "A company added 10 Service Users.",
-//     description: "A company added 10 Service Users to your app.",
-//     time: "6:00 PM",
-//   },
-//   {
-//     id: "14",
-//     activity: "A company added 2 Carers.",
-//     description: "A company added 2 Carers to your app.",
-//     time: "6:15 PM",
-//   },
-//   {
-//     id: "15",
-//     activity: "You added a company successfully.",
-//     description:
-//       "You added a company to your app successfully. Now they can add users.",
-//     time: "6:30 PM",
-//   },
-// ];
 const AdminDashboard = () => {
-  const { data, error, isLoading } = useGetAllusersListQuery();
-  const [recentUserData, setRecentUserData] = useState([]);
-  const [recentUserLoading, setRecentUserLoading] = useState(true);
-  const [recentCompanyData, setRecentCompanyData] = useState([]);
-  const [recentCompanyLoading, setRecentCompanyLoading] = useState(true);
+  // const { data, error, isLoading } = useGetAllusersListQuery();
+  const [year, setYear] = useState("");
+  const { data: userRatio, isLoading } = useUserRatioQuery(year);
 
-  useEffect(() => {
-    const fetchRecentUserData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-
-        setRecentUserData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setRecentUserLoading(isLoading);
-      }
-    };
-
-    fetchRecentUserData();
-    const fetchRecentCompanyData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-
-        setRecentCompanyData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setRecentCompanyLoading(false);
-      }
-    };
-
-    fetchRecentCompanyData();
-  }, []);
-
-  console.log(data?.data.length);
+  console.log(userRatio?.data.userOverview);
 
   return (
     <div>
@@ -159,7 +29,7 @@ const AdminDashboard = () => {
                       Total Users
                     </p>
                     <p className="text-xs lg:text-sm xl:text-xl  mb-1 text-secondary-color">
-                      {data?.data.length}
+                      {userRatio?.data.totalUsers}
                     </p>
                   </div>
                 </div>
@@ -167,7 +37,10 @@ const AdminDashboard = () => {
             </div>
             {/* State */}
             <div className="w-full h-fit  rounded-xl">
-              <UserRatioBarChart />
+              <UserRatioBarChart
+                setYear={setYear}
+                userRatio={userRatio?.data.userOverview}
+              />
             </div>
           </div>
         </div>
@@ -182,7 +55,10 @@ const AdminDashboard = () => {
           style={{ boxShadow: "0px 0px 2px 1px #00000030" }}
         >
           {/* Recent User table  */}
-          <RecentUserTable data={data?.data} loading={isLoading} />
+          <RecentUserTable
+            data={userRatio?.data.recentUsers}
+            loading={isLoading}
+          />
         </div>
       </>
     </div>

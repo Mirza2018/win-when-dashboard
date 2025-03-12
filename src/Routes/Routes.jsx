@@ -32,6 +32,7 @@ import CategoriesPage from "../Components/Modal/Admin/CategoriesPage";
 import Loading from "../Components/UI/Loading";
 import SettingsPage from "../Pages/Admin/SettingsPage";
 import UsersPage from "../Pages/Admin/UsersPage";
+import AboutUs from "../Pages/Common/settings/AboutUs";
 
 function AuthRedirect() {
   const navigate = useNavigate();
@@ -117,8 +118,10 @@ const router = createBrowserRouter([
         path: "settings/terms-and-condition",
         element: <TermsOfService />,
       },
-
-
+      {
+        path: "settings/about-us",
+        element: <AboutUs />,
+      },
 
       {
         path: "notifications",

@@ -19,8 +19,29 @@ export const categoryApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.categorys],
     }),
+
+    updateCtegory: build.mutation({
+      query: (category) => ({
+        url: `/category/${category.id}`,
+        method: "PATCH",
+        body: { name: category.categoryName },
+      }),
+      invalidatesTags: [tagTypes.categorys],
+    }),
+
+    deleteCategory: build.mutation({
+      query: (category) => ({
+        url: `/category/${category.id}`,
+        method: "Delete",
+      }),
+      invalidatesTags: [tagTypes.categorys],
+    }),
   }),
 });
 
-export const { useGetAllcategoryListQuery, useCreateCtegoryMutation } =
-  categoryApi;
+export const {
+  useGetAllcategoryListQuery,
+  useCreateCtegoryMutation,
+  useUpdateCtegoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApi;

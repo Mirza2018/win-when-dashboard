@@ -7,7 +7,7 @@ export const profileApi = baseApi.injectEndpoints({
       query: () => ({
         url: `/users/my-profile`,
         method: "Get",
-      }),
+      }), 
       providesTags: [tagTypes.profile],
     }),
 
@@ -19,7 +19,14 @@ export const profileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.profile],
     }),
+
+    userRatio: build.query({
+      query: (year) => ({
+        url: `/users/all-users-overview?year=${year}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useProfileUpdsateMutation } = profileApi;
+export const { useGetProfileQuery, useProfileUpdsateMutation, useUserRatioQuery } = profileApi;
