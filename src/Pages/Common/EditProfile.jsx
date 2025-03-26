@@ -26,7 +26,7 @@ import { getImageUrl } from "../../redux/getBaseUrl";
 
 const EditProfile = () => {
   const { data, isLoading } = useGetProfileQuery();
-  const myProfile = data?.data?.result;
+  const myProfile = data?.data;
   const newDate = new Date(myProfile?.dateOfBirth);
 
   console.log(newDate, "kdjfuihuy");
@@ -44,11 +44,17 @@ const EditProfile = () => {
   const [imageUrl, setImageUrl] = useState(
     getImageUrl() + myProfile?.profileImage
   );
-
+console.log(getImageUrl() + myProfile?.profileImage);
   useEffect(() => {
     setImageUrl(getImageUrl() + myProfile?.profileImage);
   }, [myProfile]);
 
+
+
+
+  console.log(data);
+
+  
   const handleImageUpload = (info) => {
     if (info.file.status === "removed") {
       setImageUrl(getImageUrl() + myProfile?.profileImage); // Reset to null or fallback image

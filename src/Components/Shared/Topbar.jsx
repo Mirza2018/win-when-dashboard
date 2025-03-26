@@ -7,6 +7,7 @@ import { useState } from "react";
 import user from "/images/user.png";
 import { AllImages } from "../../../public/images/AllImages";
 import { CiUser } from "react-icons/ci";
+import { useLazyGetNotificationQuery } from "../../redux/api/notificationApi";
 
 const notifications = [
   {
@@ -37,6 +38,9 @@ const notifications = [
 ];
 
 const Topbar = ({ collapsed, setCollapsed }) => {
+  const [trigger, { data, isFetching, error }] = useLazyGetNotificationQuery();
+  console.log("notification", data, isFetching);
+
   const user = JSON.parse(localStorage.getItem("home_care_user"));
   const [notificationCount, setNotificationCount] = useState(
     notifications.length
@@ -82,6 +86,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       </div>
       <div className="flex items-center justify-center mr-5 gap-2">
         <Dropdown
+          onMouseEnter={() => trigger()}
           overlay={notificationMenu}
           trigger={["hover"]}
           placement="bottomRight"

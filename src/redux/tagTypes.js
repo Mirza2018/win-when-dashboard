@@ -1,3 +1,5 @@
+import { notification } from "antd";
+
 export const tagTypes = {
   user: "User",
   allUsers: "AllUsers",
@@ -5,6 +7,7 @@ export const tagTypes = {
   profile: "Profile",
   privacy: "Privacy",
   terms: "Terms",
+  notification:"Notification"
 };
 
 export const tagTypesList = [
@@ -14,4 +17,5 @@ export const tagTypesList = [
   tagTypes.profile,
   tagTypes.privacy,
   tagTypes.terms,
+  tagTypes.notification
 ];

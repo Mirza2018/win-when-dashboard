@@ -5,7 +5,7 @@ export const profileApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getProfile: build.query({
       query: () => ({
-        url: `/users/my-profile`,
+        url: `/users/admin-profile`,
         method: "Get",
       }), 
       providesTags: [tagTypes.profile],

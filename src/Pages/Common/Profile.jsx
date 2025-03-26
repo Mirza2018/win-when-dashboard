@@ -9,7 +9,7 @@ import { getImageUrl } from "../../redux/getBaseUrl";
 
 const Profile = () => {
   const { data, isLoading } = useGetProfileQuery();
-  const myProfile = data?.data?.result;
+  const myProfile = data?.data;
 
   if (isLoading) {
      return (
@@ -20,6 +20,7 @@ const Profile = () => {
   }
 
   const date = myProfile?.dateOfBirth.slice(0,10)
+
 
 
   return (
