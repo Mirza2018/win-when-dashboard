@@ -30,7 +30,6 @@ const EditProfile = () => {
   const myProfile = data?.data;
   const newDate = new Date(myProfile?.dateOfBirth);
 
-
   const [updateProfile] = useProfileUpdsateMutation();
   const navigate = useNavigate();
 
@@ -42,15 +41,13 @@ const EditProfile = () => {
     setImageUrl(getImageUrl() + myProfile?.profileImage);
   }, [myProfile]);
 
-  // const date = dayjs(newDate).format("DD/MM/YYYY");
-  // console.log(dayjs);
-const formateDate = newDate.toLocaleDateString("en-GB");
+  const formateDate = newDate.toLocaleDateString("en-GB");
   const parsedDate = formateDate ? dayjs(formateDate, "DD/MM/YYYY") : null;
   const initialValues = {
     fullName: myProfile?.fullName,
     address: myProfile?.address,
     contactNumber: myProfile?.phone,
-    dob: parsedDate
+    dob: parsedDate,
   };
 
   const handleImageUpload = (info) => {
@@ -225,8 +222,6 @@ const formateDate = newDate.toLocaleDateString("en-GB");
 
               <Form.Item name="dob" className="text-white">
                 <DatePicker
-                  // defaultValue={newDate.toLocaleDateString()}
-                  // defaultValue={}
                   format="DD/MM/YYYY"
                   suffix={<MdOutlineEdit />}
                   className="h-14 w-full"

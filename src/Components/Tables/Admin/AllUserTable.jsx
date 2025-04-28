@@ -33,6 +33,7 @@ const AllUserTable = ({
             const url = getImageUrl()
             return (
               <>
+                {console.log(url + record?.profileImage)}
                 {record?.profileImage ? (
                   <img
                     src={url + record?.profileImage}
