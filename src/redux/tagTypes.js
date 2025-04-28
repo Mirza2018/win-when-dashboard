@@ -7,7 +7,8 @@ export const tagTypes = {
   profile: "Profile",
   privacy: "Privacy",
   terms: "Terms",
-  notification:"Notification"
+  notification: "Notification",
+  notificationCount: "NotificationCount",
 };
 
 export const tagTypesList = [
@@ -17,5 +18,6 @@ export const tagTypesList = [
   tagTypes.profile,
   tagTypes.privacy,
   tagTypes.terms,
-  tagTypes.notification
+  tagTypes.notification,
+  tagTypes.notificationCount,
 ];

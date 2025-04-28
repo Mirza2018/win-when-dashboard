@@ -14,7 +14,6 @@ import { EditOutlined } from "@ant-design/icons";
 import { MdOutlineEdit } from "react-icons/md";
 import { IoCameraOutline, IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
 import {
@@ -23,38 +22,37 @@ import {
 } from "../../redux/api/profileApi";
 import { toast } from "sonner";
 import { getImageUrl } from "../../redux/getBaseUrl";
+import dayjs from "dayjs";
+import moment from "moment";
 
 const EditProfile = () => {
   const { data, isLoading } = useGetProfileQuery();
   const myProfile = data?.data;
   const newDate = new Date(myProfile?.dateOfBirth);
 
-  console.log(newDate, "kdjfuihuy");
 
   const [updateProfile] = useProfileUpdsateMutation();
   const navigate = useNavigate();
-  // const profileData = {
-  //   firstName: "James",
-  //   LastName: "Mitchell",
-  //   address: "emily@gmail.com",
-  //   contactNumber: "+880171139055",
-  //   dob: "10-10-1998",
-  // };
 
   const [imageUrl, setImageUrl] = useState(
     getImageUrl() + myProfile?.profileImage
   );
-console.log(getImageUrl() + myProfile?.profileImage);
+  console.log(getImageUrl() + myProfile?.profileImage);
   useEffect(() => {
     setImageUrl(getImageUrl() + myProfile?.profileImage);
   }, [myProfile]);
 
+  // const date = dayjs(newDate).format("DD/MM/YYYY");
+  // console.log(dayjs);
+const formateDate = newDate.toLocaleDateString("en-GB");
+  const parsedDate = formateDate ? dayjs(formateDate, "DD/MM/YYYY") : null;
+  const initialValues = {
+    fullName: myProfile?.fullName,
+    address: myProfile?.address,
+    contactNumber: myProfile?.phone,
+    dob: parsedDate
+  };
 
-
-
-  console.log(data);
-
-  
   const handleImageUpload = (info) => {
     if (info.file.status === "removed") {
       setImageUrl(getImageUrl() + myProfile?.profileImage); // Reset to null or fallback image
@@ -133,6 +131,7 @@ console.log(getImageUrl() + myProfile?.profileImage);
       </div>
       <div className=" ">
         <Form
+          initialValues={initialValues}
           onFinish={onFinish}
           layout="vertical"
           className="bg-transparent py-10  h-full w-full p-10"
@@ -182,7 +181,7 @@ console.log(getImageUrl() + myProfile?.profileImage);
                 First Name
               </Typography.Title>
               <Form.Item
-                initialValue={myProfile?.fullName}
+                // initialValue={myProfile?.fullName}
                 name="fullName"
                 className="text-white "
               >
@@ -198,7 +197,7 @@ console.log(getImageUrl() + myProfile?.profileImage);
                 Address
               </Typography.Title>
               <Form.Item
-                initialValue={myProfile?.address}
+                // initialValue={myProfile?.address}
                 name="address"
                 className="text-white "
               >
@@ -214,7 +213,7 @@ console.log(getImageUrl() + myProfile?.profileImage);
               </Typography.Title>
 
               <Form.Item
-                initialValue={myProfile?.phone}
+                // initialValue={myProfile?.phone}
                 name="contactNumber"
                 className="text-white"
               >
@@ -223,16 +222,17 @@ console.log(getImageUrl() + myProfile?.profileImage);
               <Typography.Title level={5} style={{ color: "#222222" }}>
                 Date Of Birth
               </Typography.Title>
-              <Form.Item
-                // initialValue={newDate}
-                name="dob"
-                className="text-white"
-              >
+
+              <Form.Item name="dob" className="text-white">
                 <DatePicker
+                  // defaultValue={newDate.toLocaleDateString()}
+                  // defaultValue={}
+                  format="DD/MM/YYYY"
                   suffix={<MdOutlineEdit />}
                   className="h-14 w-full"
                 />
               </Form.Item>
+
               <Form.Item>
                 <Button
                   className="w-full py-6 border !border-secondary-color hover:border-secondary-color text-xl !text-primary-color bg-secondary-color hover:!bg-secondary-color font-semibold rounded-2xl mt-8"

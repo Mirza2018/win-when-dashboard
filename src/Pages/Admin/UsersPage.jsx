@@ -16,7 +16,6 @@ import {
   useUserBlockMutation,
 } from "../../redux/api/usersApi";
 import { toast } from "sonner";
-import { resolvePath } from "react-router-dom";
 
 const UsersPage = () => {
   const [blockUser] = useUserBlockMutation();
@@ -25,11 +24,6 @@ const UsersPage = () => {
   // console.log(data?.data, "All Users", error, isLoading);
 
   const [searchText, setSearchText] = useState("");
-
-  //* Use to set user
-  // const [data, setData] = useState([]);
-
-  // const [loading, setLoading] = useState(true);
 
   //* It's Use to Show Modal
   const [isCompanyViewModalVisible, setIsCompanyViewModalVisible] =
@@ -46,21 +40,6 @@ const UsersPage = () => {
   //* It's Use to Set Seclected User to Block and view
   const [currentCompanyRecord, setCurrentCompanyRecord] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("/data/userData.json");
-  //       setData(response?.data); // Make sure this is an array
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const filteredCompanyData = useMemo(() => {
     if (!searchText) return data?.data;
     console.log(data?.data, "forme");
@@ -71,17 +50,6 @@ const UsersPage = () => {
       return item?.email.toLowerCase().includes(searchText.toLowerCase());
     });
   }, [data?.data, searchText]);
-
-  // const filteredCompanyData = useMemo(() => {
-  //   if (!searchText) return data?.data;
-
-  //   console.log(data?.data, "forme");
-
-  //   return data?.data.filter((item) => {
-  //     console.log(item, searchText, "forme2");
-  //     return item?.email.includes(searchText.toLowerCase()); // Add return here
-  //   });
-  // }, [data?.data, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);

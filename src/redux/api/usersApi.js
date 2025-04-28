@@ -16,9 +16,10 @@ export const usersApi = baseApi.injectEndpoints({
         url: `/users/block/${blockId}`,
         method: "PATCH",
       }),
-      invalidatesTags: [tagTypes.allUsers],
+      invalidatesTags: [tagTypes.allUsers,tagTypes.profile],
     }),
   }),
 });
 
 export const { useGetAllusersListQuery, useUserBlockMutation } = usersApi;
+  

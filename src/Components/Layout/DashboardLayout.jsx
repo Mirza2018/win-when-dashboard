@@ -122,6 +122,7 @@ const DashboardLayout = () => {
       ),
       label: <NavLink to="users">Users</NavLink>,
     },
+
     {
       key: "categories",
       icon: (

@@ -7,7 +7,7 @@ export const profileApi = baseApi.injectEndpoints({
       query: () => ({
         url: `/users/admin-profile`,
         method: "Get",
-      }), 
+      }),
       providesTags: [tagTypes.profile],
     }),
 
@@ -25,6 +25,7 @@ export const profileApi = baseApi.injectEndpoints({
         url: `/users/all-users-overview?year=${year}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.profile],
     }),
   }),
 });

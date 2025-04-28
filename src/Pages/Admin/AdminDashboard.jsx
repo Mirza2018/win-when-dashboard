@@ -10,7 +10,6 @@ const AdminDashboard = () => {
   const [year, setYear] = useState("");
   const { data: userRatio, isLoading } = useUserRatioQuery(year);
 
-  console.log(userRatio?.data.userOverview);
 
   return (
     <div>
@@ -56,7 +55,7 @@ const AdminDashboard = () => {
         >
           {/* Recent User table  */}
           <RecentUserTable
-            data={userRatio?.data.recentUsers}
+            data={userRatio?.data?.recentUsers}
             loading={isLoading}
           />
         </div>

@@ -32,7 +32,7 @@ const UserRatioBarChart = ({ userRatio, setYear }) => {
   const currentYear = new Date().getFullYear();
 
   // Formatter function to add 'K' suffix to Y-axis values
-  console.log(userRatio);
+  // console.log(userRatio);
   const handleYearChange = (value) => {
     setYear(value); // Update the selected year
   };

@@ -19,7 +19,7 @@ const Profile = () => {
      );
   }
 
-  const date = myProfile?.dateOfBirth.slice(0,10)
+  const date = myProfile?.dateOfBirth?.slice(0,10)
 
 
 
@@ -92,6 +92,7 @@ const Profile = () => {
               </Typography.Title>
               <Form.Item className="text-white ">
                 <PhoneInput
+                  disabled
                   value={myProfile?.phone}
                   className=""
                   enableSearch={true}

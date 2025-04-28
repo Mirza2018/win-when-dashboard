@@ -127,6 +127,7 @@ const router = createBrowserRouter([
         path: "notifications",
         element: <Notifications />,
       },
+      ,
     ],
   },
   {
